@@ -1,0 +1,41 @@
+<link rel="stylesheet" type="text/css" href="root.css">
+
+<div id="mapdiv" style="margin-left: auto; margin-right: auto; width: 90%;; height: 450px;"></div>​
+<script src="http://www.amcharts.com/lib/3/ammap.js" type="text/javascript"></script>
+<script src="http://www.amcharts.com/lib/3/maps/js/usaHigh.js" type="text/javascript"></script>
+<div id="map"></div>
+<script type="text/javascript">
+  var map;
+  AmCharts.ready(function() {
+    map                  = new AmCharts.AmMap();
+    map.pathToImages     = "http://www.amcharts.com/lib/3/images/";
+    map.panEventsEnabled = true;
+    map.backgroundColor  = "#535364";
+    map.backgroundAlpha  = 1;
+
+    map.zoomControl.panControlEnabled  = true;
+    map.zoomControl.zoomControlEnabled = true;
+
+    var dataProvider     = {
+      mapVar          : AmCharts.maps.usaHigh,
+      getAreasFromMap : true,
+      areas           : [
+
+      ]
+    };
+
+    map.dataProvider     = dataProvider;
+
+    map.areasSettings    = {
+      autoZoom             : true,
+      color                : "#CDCDCD",
+      colorSolid           : "#5EB7DE",
+      selectedColor        : "#5EB7DE",
+      outlineColor         : "#666666",
+      rollOverColor        : "#88CAE7",
+      rollOverOutlineColor : "#FFFFFF"
+    };
+
+    map.write("mapdiv");
+  });
+</script>

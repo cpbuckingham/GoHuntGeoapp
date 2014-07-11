@@ -1,0 +1,71 @@
+#site {
+    color: #ffffff;
+    width: 100%;
+    background-image: url('/images/cityscape.jpg');
+    background-repeat: no-repeat;
+}
+
+#content_container {
+    margin-bottom: 2em;
+    overflow: hidden;
+}
+
+#content {
+    color: #ffffff;
+    border-style: solid;
+    border-width: 5px;
+    float: left;
+    width: 20%;
+    height: 350px;
+}
+
+#content h3 {
+    margin: 0;
+}
+
+#map {
+    font-size: 70%;
+    text-align: left;
+    background-color: #535364;
+    margin-top: 10%;
+    color: #CDCDCD;
+}
+
+#register {
+    color: #ffffff;
+}
+
+#login {
+    color: #ffffff;
+}
+
+#contact {
+    color: #ffffff;
+}
+
+body {
+    background-color: #000000;
+    text-align: center;
+}
+
+#flag-map {
+    border: 5px solid #ffffff;
+    overflow: hidden;
+}
+
+header {
+    background-color: black;
+    text-align: center;
+    float: right;
+}
+
+img {
+    width: 500px;
+    height: 350px;
+}
+
+#pier img {
+    width: 100%;
+    margin-bottom: 2em;
+}
+
