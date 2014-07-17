@@ -19,4 +19,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rerun (~> 0.10.0)
+  rerun
