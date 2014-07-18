@@ -41,7 +41,9 @@ a:hover
     width: 20%;
     height: 350px;
 }
-
+#location {
+    color: yellow;
+}
 #content h3 {
     margin: 0;
 }

@@ -2,12 +2,13 @@
 <form method="post" action="">
   <button>Mark your location</button>
 </form>
-<br/>
-<% if @location.present? %>
-<%= @location.city %>
-<%= @location.state %>
+<h1 id="location"><% if @location.present? %>
+    <%= @location.city %>
+    <%= ", " %>
+    <%= @location.state %>
 <% end %>
-
+  </h1>
+<br>
 <br>
 <link rel="stylesheet" type="text/css" href="root.css">
 
