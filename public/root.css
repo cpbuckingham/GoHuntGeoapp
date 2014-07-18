@@ -47,7 +47,15 @@ a:hover
 #content h3 {
     margin: 0;
 }
+#why_content {
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    width: 700px;
+    height: 330px;
+    margin-right: auto;
+    margin-left: auto;
 
+}
 #map {
     font-size: 70%;
     text-align: left;
@@ -67,7 +75,6 @@ a:hover
 #contact {
     color: #ffffff;
 }
-
 body {
     background-color: #000000;
     text-align: center;
@@ -85,6 +92,6 @@ header {
 }
 
 img {
-    width: 500px;
+    width: 450px;
     height: 350px;
 }
