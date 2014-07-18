@@ -1,0 +1,15 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: gohuntgeo
+  pool: 5
+  username: camjam
+  password:
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: gohuntgeo_test
+  pool: 5
+  username: camjam
+  password:

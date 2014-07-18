@@ -3,11 +3,34 @@
     width: 100%;
     background-image: url('/images/cityscape.jpg');
     background-repeat: no-repeat;
+    text-emphasis-color: #ffffff;
+}
+a:link
+{
+    color:#FFFFFF;
 }
 
+a:visited
+{
+    color:#FFFFFF;
+}
+
+a:hover
+{
+    color:yellow;
+}
+
+#notice
+{
+    color:#ffffff;
+}
 #content_container {
     margin-bottom: 2em;
     overflow: hidden;
+}
+#welcome
+{
+    color: #ffffff;
 }
 
 #content {
@@ -63,4 +86,3 @@ img {
     width: 500px;
     height: 350px;
 }
-

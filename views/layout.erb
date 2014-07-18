@@ -1,8 +1,10 @@
 <link rel="stylesheet" type="text/css" href="root.css">
-<h1 id="site">GoHuntGeo
+
+<h1 id="site">
+  <a href='/'>GoHuntGeo</a>
   <div style="margin-right:85%;">
-    <form method="get" action="/login_sign_up">
-      <button>Sign up or Login</button>
+    <form method="get" action="/login">
+      <button>Register or Login</button>
     </form>
     <form method="get" action="/how_to_start">
       <button>How to start</button>
@@ -19,6 +21,10 @@
     <br>
   </div>
 </h1>
+  <h3 id="notice">
+    <% if flash[:notice] %>
+    <%= flash[:notice] %>
+  <% end %></h3>
 <br>
 <br>
 <%= yield %>
