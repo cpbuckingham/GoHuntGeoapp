@@ -1,7 +1,13 @@
-<h1 id="welcome">Welcome,  <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"] %></h1>
-<form method="post" action="tag_your_spot">
+<h1 id="welcome">Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"] %></h1>
+<form method="post" action="">
   <button>Mark your location</button>
 </form>
+<br/>
+<% if @location.present? %>
+<%= @location.city %>
+<%= @location.state %>
+<% end %>
+
 <br>
 <link rel="stylesheet" type="text/css" href="root.css">
 

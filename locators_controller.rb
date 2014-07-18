@@ -4,26 +4,37 @@ class LocatorsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :new_request
 
   def index
+    x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
     ip = request.remote_ip
-    if ip == '127.0.0.1'
+
+    if get_my_location(ip).nil?
       ip = '74.125.113.104'
     end
-    @location = get_my_location(ip)
+
+    remote_ip_location = get_my_location(ip)
+    if x_forwarded_ip.present?
+      @location = get_my_location(x_forwarded_ip.split(',')[0])
+      if @location.nil?
+        @location = remote_ip_location
+      end
+    else
+      @location = remote_ip_location
+    end
   end
 
   def new_request
     ip = params[:ip_input]
 
-    if ip.blank? || ip !~ /\d+\.\d+\.\d+\.\d+/
-      ip = '74.125.113.104'
-    end
-
     @location = get_my_location(ip)
 
-    render :index
+    if @location.nil?
+      render :text => 'Invalid IP Address', :status => 400
+    else
+      render :index
+    end
   end
 
-  private 
+  private
 
   def get_my_location(ip)
     SimpleGeolocation::Geocoder.new(ip).geocode!

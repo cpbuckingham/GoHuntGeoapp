@@ -1,6 +1,7 @@
 require "sinatra"
 require "rack-flash"
 require "gschool_database_connection"
+require "simple_geolocation"
 
 class GoHuntGeoApp < Sinatra::Base
   enable :sessions
@@ -21,16 +22,19 @@ class GoHuntGeoApp < Sinatra::Base
     password = params[:password]
     if username == "" && password == ""
       flash[:notice] = "No username or password entered"
+      redirect '/login'
     elsif password == ""
       flash[:notice] = "No password entered"
+      redirect '/login'
     elsif username == ""
       flash[:notice] = "No username entered"
+      redirect '/login'
     elsif @database_connection.sql("SELECT username, password from users where username = '#{username}' and password = '#{password}'") == []
       flash[:notice] = "Incorrect Username and Password"
+      redirect '/login'
     else
       user_id_hash = session[:user] = @database_connection.sql("Select id from users where username = '#{username}'").reduce
-      user_id = user_id_hash["id"]
-      session[:user] = user_id
+      session[:user] = user_id_hash["id"]
       redirect '/user_page'
       @list_users = @database_connection.sql("Select username from users")
       erb :login, :locals => {:username => username}
@@ -57,6 +61,8 @@ class GoHuntGeoApp < Sinatra::Base
     else
       if @database_connection.sql("SELECT username from users where username = '#{username}'") == []
         @database_connection.sql("INSERT INTO users (username, password) values ('#{username}', '#{password}')")
+        user_id_hash = session[:user] = @database_connection.sql("Select id from users where username = '#{username}'").reduce
+        session[:user] = user_id_hash["id"]
         flash[:notice] = "Thank you for registering"
         redirect '/user_page'
       else
@@ -68,9 +74,27 @@ class GoHuntGeoApp < Sinatra::Base
   end
 
   get '/user_page' do
-    p
     erb :user_page
   end
+
+  post '/user_page' do
+    x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
+    ip = request.env['REMOTE_ADDR']
+    if get_my_location(ip).nil?
+      ip = '74.125.113.104'
+    end
+    remote_ip_location = get_my_location(ip)
+    if x_forwarded_ip.present?
+      @location = get_my_location(x_forwarded_ip.split(',')[0])
+      if @location.nil?
+        @location = remote_ip_location
+      end
+    else
+      @location = remote_ip_location
+    end
+    erb :user_page
+  end
+
   get '/how_to_start' do
     erb :how_to_start
   end
@@ -85,5 +109,9 @@ class GoHuntGeoApp < Sinatra::Base
   end
 
   run! if app_file == $0
+
+  def get_my_location(ip)
+    SimpleGeolocation::Geocoder.new(ip).geocode!
+  end
 end
 
