@@ -2,6 +2,7 @@ require "sinatra"
 require "rack-flash"
 require "gschool_database_connection"
 require "simple_geolocation"
+require "pony"
 
 class GoHuntGeoApp < Sinatra::Base
   enable :sessions
@@ -107,6 +108,18 @@ class GoHuntGeoApp < Sinatra::Base
   get '/contact_us' do
     erb :contact_us
   end
+
+  post '/contact_us' do
+    name = params[:name]
+    email = params[:email]
+    message = params[:message]
+    Pony.mail :to => 'cameron.p.buckingham@gmail.com',
+              :from => 'GoHuntGeo',
+              :subject => 'Message from GoHuntGeo',
+              :body => erb(:email, :locals => {name: name, email: email, message: message}, layout:false)
+    flash[:notice] = "Thanks for your message, we'll get back to you shortly"
+    redirect '/contact_us'
+end
 
   run! if app_file == $0
 
