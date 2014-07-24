@@ -51,7 +51,7 @@ a:hover
     color: #ffffff;
     border: 2px solid #ffffff;
     width: 700px;
-    height: 330px;
+    height: 200px;
     margin-right: auto;
     margin-left: auto;
 
@@ -94,4 +94,9 @@ header {
 img {
     width: 450px;
     height: 350px;
+}
+#works {
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    text-align: left;
 }
