@@ -127,4 +127,3 @@ end
     SimpleGeolocation::Geocoder.new(ip).geocode!
   end
 end
-
