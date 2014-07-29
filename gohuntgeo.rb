@@ -88,7 +88,7 @@ class GoHuntGeoApp < Sinatra::Base
     remote_ip_location = get_my_location(ip)
     if x_forwarded_ip.present?
 
-      @location = get_my_location(x_forwarded_ip.split(',')[0])
+      @location = get_my_location(x_forwarded_ip.split(', ')[0])
       if @location.nil?
         @location = remote_ip_location
       end
@@ -104,13 +104,12 @@ class GoHuntGeoApp < Sinatra::Base
       user_id = session[:user] if session[:user] #make sure this is an integer
       #need to create a record for a UserState where the state_id = the state_id and the user_id = the current_session'
 
-      @database_connection.sql("Insert into users_states (user_id, state_id) values (#{user_id}, #{state_id})")
+      # @database_connection.sql("Insert into users_states (user_id, state_id) values (#{user_id}, #{state_id})")
       #now we need to update the users score/count
       #first we need to select the user where id = user_id
 
-     user = @database_connection.sql("Select user from  users where (user_id, #{user_id})")
+     # user = @database_connection.sql("Select user from  users where (user_id, #{user_id})")
       #now we need to update that users count based on the value from the state
-      #you have all my contact if you need help. I can pair this weekend.
     end
     erb :user_page
   end
