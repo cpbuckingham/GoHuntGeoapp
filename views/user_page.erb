@@ -15,7 +15,7 @@
 <br>
 <div id="mapdiv" style="margin-left: auto; margin-right: auto; width: 90%;; height: 450px;"></div>​
 <script src="http://www.amcharts.com/lib/3/ammap.js" type="text/javascript"></script>
-<script src="/usahigh.js" type="text/javascript"></script>
+<script src="http://www.amcharts.com/lib/3/maps/js/usaHigh.js" type="text/javascript"></script>
 <div id="map"></div>
 <script type="text/javascript">
   var map;
@@ -35,11 +35,10 @@
     };
     map.dataProvider     = dataProvider;
     map.areasSettings    = {
-//      selectedColorOpacity : 0.5,
       autoZoom             : true,
       color                : "#CDCDCD",
       colorSolid           : "#5EB7DE",
-      selectedColor        : url(/images/{statename}),
+      selectedColor        : "#5EB7DE",
       outlineColor         : "#666666",
       rollOverColor        : "#88CAE7",
       rollOverOutlineColor : "#FFFFFF"
