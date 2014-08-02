@@ -3,6 +3,7 @@ require "rack-flash"
 require "gschool_database_connection"
 require "simple_geolocation"
 require "pony"
+require "sass"
 
 class GoHuntGeoApp < Sinatra::Base
   enable :sessions

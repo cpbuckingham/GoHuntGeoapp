@@ -74,6 +74,7 @@ GEM
     rspec-mocks (3.0.2)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
+    sass (3.3.14)
     simple_geolocation (0.0.8)
       activesupport
       brcep
@@ -101,5 +102,6 @@ DEPENDENCIES
   rake
   rerun
   rspec
+  sass
   simple_geolocation
   sinatra
