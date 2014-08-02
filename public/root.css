@@ -101,3 +101,8 @@ img {
     border: 2px solid #00ffa5;
     text-align: left;
 }
+ul.stately {
+    width:900px; /*width and font size must match*/
+    font-size:900px;
+    color: rgba(58, 53, 54, 0.87);
+}
