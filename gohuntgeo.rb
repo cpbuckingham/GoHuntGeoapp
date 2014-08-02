@@ -76,6 +76,7 @@ class GoHuntGeoApp < Sinatra::Base
 
   get '/user_page' do
     @states = @database_connection.sql("SELECT abbreviation FROM States")
+    @id = session[:user]
     erb :user_page
   end
 
@@ -114,14 +115,8 @@ class GoHuntGeoApp < Sinatra::Base
     erb :user_page
   end
 
-  get '/how_to_start' do
-    erb :how_to_start
-  end
   get '/how_this_works' do
     erb :how_this_works
-  end
-  get '/why' do
-    erb :why
   end
   get '/contact_us' do
     erb :contact_us

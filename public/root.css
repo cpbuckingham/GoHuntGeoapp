@@ -1,79 +1,76 @@
 #site {
-    color: #ffffff;
+    color: #00ffa5;
     width: 100%;
     background-image: url('/images/cityscape.jpg');
     background-repeat: no-repeat;
-    text-emphasis-color: #ffffff;
+    text-emphasis-color: #00ffa5;
 }
 a:link
 {
-    color:#FFFFFF;
+    color:#00ffa5;
 }
 
 a:visited
 {
-    color:#FFFFFF;
+    color:#00ffa5;
 }
 
 a:hover
 {
-    color:yellow;
+    color:#00ffa5;
 }
 
 #notice
 {
-    color:#ffffff;
-}
-#content_container {
-    margin-bottom: 2em;
-    overflow: hidden;
+    color:#00ffa5;
 }
 #welcome
 {
-    color: #ffffff;
+    color: #00ffa5;
 }
 
+#map {
+    height: 400px;
+    width: 600px;
+}
 #content {
-    color: #ffffff;
+    color: #00ffa5;
     border-style: solid;
     border-width: 5px;
+    text-align: left;
+    margin-bottom: 10%;
     float: left;
     width: 20%;
     height: 350px;
 }
 #location {
-    color: yellow;
-}
-#content h3 {
-    margin: 0;
+    color: #00ffa5;
 }
 #why_content {
-    color: #ffffff;
-    border: 2px solid #ffffff;
+    color: #00ffa5;
+    border: 2px solid #00ffa5;
     width: 700px;
     height: 200px;
     margin-right: auto;
     margin-left: auto;
 
 }
-#map {
-    font-size: 70%;
-    text-align: left;
-    background-color: #535364;
-    margin-top: 10%;
-    color: #CDCDCD;
-}
-
+/*#map {*/
+    /*font-size: 70%;*/
+    /*text-align: left;*/
+    /*background-color: #535364;*/
+    /*margin-top: 10%;*/
+    /*color: #CDCDCD;*/
 #register {
-    color: #ffffff;
+    color: #00ffa5;
 }
 
 #login {
-    color: #ffffff;
+    color: #00ffa5;
 }
 
 #contact {
-    color: #ffffff;
+    color: #00ffa5;
 }
 body {
     background-color: #000000;
@@ -81,7 +78,7 @@ body {
 }
 
 #flag-map {
-    border: 5px solid #ffffff;
+    border: 5px solid #00ffa5;
     overflow: hidden;
 }
 
@@ -89,14 +86,18 @@ header {
     background-color: black;
     text-align: center;
     float: right;
-}
 
+}
+#header {
+    color: #00ffa5;
+}
+}
 img {
     width: 450px;
     height: 350px;
 }
 #works {
-    color: #ffffff;
-    border: 2px solid #ffffff;
+    color: #00ffa5;
+    border: 2px solid #00ffa5;
     text-align: left;
 }
