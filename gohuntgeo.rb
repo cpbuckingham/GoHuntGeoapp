@@ -96,7 +96,6 @@ class GoHuntGeoApp < Sinatra::Base
       end
     else
       @location = remote_ip_location
-      #location = Mountainview, CA
       # we need to use @location and the current session to look up the records in the database
       #state_id = need to look up state in database where abbreviation  = CA  and return its ID
         #this basically does it except the @location.state method is off. just write a split to get the abbreviation
@@ -106,11 +105,11 @@ class GoHuntGeoApp < Sinatra::Base
       user_id = session[:user] if session[:user] #make sure this is an integer
       #need to create a record for a UserState where the state_id = the state_id and the user_id = the current_session'
 
-      # @database_connection.sql("Insert into users_states (user_id, state_id) values (#{user_id}, #{state_id})")
+      @database_connection.sql("Insert into users_states (user_id, state_id) values (#{user_id}, #{state_id})")
       #now we need to update the users score/count
       #first we need to select the user where id = user_id
 
-     # user = @database_connection.sql("Select user from  users where (user_id, #{user_id})")
+     user = @database_connection.sql("Select user from users where (user_id, #{user_id})")
       #now we need to update that users count based on the value from the state
     end
     erb :user_page
