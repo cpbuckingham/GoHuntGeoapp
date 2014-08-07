@@ -1,20 +1,13 @@
 <link rel="stylesheet" type="text/css" href="root.css">
 
 <% if session[:user] %>
-<h1 id="welcome">Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"]%></h1>
-  <% end %>
-<form method="post" action="">
-  <button>Mark your location</button>
+<div id="welcome"><h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"]%>
+  <% end %></h1>
+<h3>You have _____ points </h3>
+<form method="get" action="/expense">
+  <button>Expense states</button>
 </form>
-<h1 id="location">
-  <% if @location.present? %>
-    <%= @location.city %>
-    <%= ", " %>
-    <%= @location.state %>
-  <% end %>
-</h1>
-<br>
-
+</div>
 <link rel="stylesheet" href="/stately/stately.css">
 <ul class="stately">
   <li data-state="al" id="al">A</li>
@@ -69,6 +62,25 @@
   <li data-state="wi" id="wi">x</li>
   <li data-state="wy" id="wy">y</li>
 </ul>
+<form method="post" action="">
+  <button>Mark your location</button>
+</form>
+<h1 id="location">
+  <% if @location.present? %>
+    <%= @location.city %>
+    <%= ", " %>
+    <%= @location.state %>
+  <% end %>
+</h1>
+<h1 id="refer">
+  <form method="get" action="/refer">
+    <button>Refer a Friend</button>
+  </form></h1>
+<h1 id="tagging">
+  <form method="get" action="/">
+    <button>Logout</button>
+  </form>
+</h1>
 
 <!--<div id="mapdiv" style="margin-left: auto; margin-right: auto; width: 90%;; height: 450px;"></div>​-->
 <!--<link href="http://www.nps.gov/npmap/bootstrap/dist/css/nps-bootstrap.min.css" rel="stylesheet">-->
@@ -176,11 +188,7 @@
 <!--//  });-->
 <!--</script>-->
 
-<h1 id="tagging">
-  <form method="get" action="/">
-    <button>Logout</button>
-  </form>
-</h1>
+
 
 
 

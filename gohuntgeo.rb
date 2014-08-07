@@ -101,15 +101,16 @@ class GoHuntGeoApp < Sinatra::Base
         #this basically does it except the @location.state method is off. just write a split to get the abbreviation
           #make sure to get just the ID integer not the hash
 
-      state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'")
+      state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
       user_id = session[:user] if session[:user] #make sure this is an integer
       #need to create a record for a UserState where the state_id = the state_id and the user_id = the current_session'
 
       @database_connection.sql("Insert into users_states (user_id, state_id) values (#{user_id}, #{state_id})")
       #now we need to update the users score/count
       #first we need to select the user where id = user_id
+      user = @database_connection.sql("Select id from users where (user_id, #{user_id})")
+      @database_connection.sql("Insert into users(count) values (#{user}")
 
-     user = @database_connection.sql("Select user from users where (user_id, #{user_id})")
       #now we need to update that users count based on the value from the state
     end
     erb :user_page
