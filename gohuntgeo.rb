@@ -35,7 +35,7 @@ class GoHuntGeoApp < Sinatra::Base
       flash[:notice] = "Incorrect Username and Password"
       redirect '/login'
     else
-      user_id_hash = session[:user] = @database_connection.sql("Select id from users where username = '#{username}'").reduce
+      user_id_hash = @database_connection.sql("Select id from users where username = '#{username}'").reduce
       session[:user] = user_id_hash["id"]
       redirect '/user_page'
       @list_users = @database_connection.sql("Select username from users")
@@ -62,7 +62,7 @@ class GoHuntGeoApp < Sinatra::Base
       flash[:notice] = "No username entered"
     else
       if @database_connection.sql("SELECT username from users where username = '#{username}'") == []
-        @database_connection.sql("INSERT INTO users (username, password) values ('#{username}', '#{password}')")
+        @database_connection.sql("INSERT INTO users (username, password, count) values ('#{username}', '#{password}', 0)")
         user_id_hash = session[:user] = @database_connection.sql("Select id from users where username = '#{username}'").reduce
         session[:user] = user_id_hash["id"]
         flash[:notice] = "Thank you for registering"
@@ -78,10 +78,13 @@ class GoHuntGeoApp < Sinatra::Base
   get '/user_page' do
     @states = @database_connection.sql("SELECT abbreviation FROM States")
     @id = session[:user]
+    @total = @database_connection.sql("select count from users where id = #{@id.to_i}").pop["count"]
     erb :user_page
   end
 
   post '/user_page' do
+    redirect '/login?' unless session[:user]
+
     x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
     ip = request.env['REMOTE_ADDR']
     if get_my_location(ip).nil?
@@ -102,15 +105,33 @@ class GoHuntGeoApp < Sinatra::Base
           #make sure to get just the ID integer not the hash
 
       state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
-      user_id = session[:user] if session[:user] #make sure this is an integer
-      #need to create a record for a UserState where the state_id = the state_id and the user_id = the current_session'
+      user_id = session[:user].to_i #make sure this is an integer
 
-      @database_connection.sql("Insert into users_states (user_id, state_id) values (#{user_id}, #{state_id})")
-      #now we need to update the users score/count
-      #first we need to select the user where id = user_id
-      user = @database_connection.sql("Select id from users where (user_id, #{user_id})")
-      @database_connection.sql("Insert into users(count) values (#{user}")
+      #track if I have visited this state before
+      visited = @database_connection.sql("select count(*) as visited from states_visited where user_id = #{user_id} and state_id = #{state_id}").pop["visited"]
+      if visited.to_i == 0
+        #now we need to update the users score/count
+        #how much is this state worth?
+        state_point_value = @database_connection.sql("select value from states where id = (#{state_id})").pop["value"]
+        #how many points do I has?
+        current_user_points = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
+        #gimme da points
+        current_user_total_points = current_user_points.to_i + state_point_value.to_i
+        #persist mah points
+        @database_connection.sql("update users set count = #{current_user_total_points} where id = #{user_id}")
 
+        #need to create a record for a UserState where the state_id = the state_id and the user_id = the current_session'
+        @database_connection.sql("Insert into states_visited (user_id, state_id) values (#{user_id}, #{state_id})")
+      else
+        flash[:notice]="You already got points for visiting this state"
+      end
+
+      @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
+
+     #first we need to select the user where id = user_id
+      # user = @database_connection.sql("Select id from users where (user_id = #{user_id})")
+      # @database_connection.sql("Insert into users(count) values (#{user}")
+      #
       #now we need to update that users count based on the value from the state
     end
     erb :user_page

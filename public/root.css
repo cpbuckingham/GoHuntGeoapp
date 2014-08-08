@@ -1,7 +1,7 @@
 #site {
     color: #00ffa5;
     width: 100%;
-    background-image: url('/images/cityscape.jpg');
+    background-image: url('images/cityscape.jpg');
     background-repeat: no-repeat;
     text-emphasis-color: #00ffa5;
 }

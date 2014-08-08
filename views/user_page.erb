@@ -3,7 +3,7 @@
 <% if session[:user] %>
 <div id="welcome"><h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"]%>
   <% end %></h1>
-<h3>You have _____ points </h3>
+<h3>You have <%=@total%> points </h3>
 <form method="get" action="/expense">
   <button>Expense states</button>
 </form>
@@ -81,6 +81,18 @@
     <button>Logout</button>
   </form>
 </h1>
+
+<!--<style>-->
+  <!--<%#= @states_visited.each do |state|%>-->
+    /*if @location.state.visited?*/
+      /*return*/
+      /*'.stately li ''#{@states_visited}'  {*/
+        /*color: #00ffa5;*/
+      /*}*/
+  /*end*/
+  /**/
+      /**/
+<!--</style>-->
 
 <!--<div id="mapdiv" style="margin-left: auto; margin-right: auto; width: 90%;; height: 450px;"></div>​-->
 <!--<link href="http://www.nps.gov/npmap/bootstrap/dist/css/nps-bootstrap.min.css" rel="stylesheet">-->
