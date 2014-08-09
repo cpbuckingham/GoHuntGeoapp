@@ -79,6 +79,11 @@ class GoHuntGeoApp < Sinatra::Base
     @states = @database_connection.sql("SELECT abbreviation FROM States")
     @id = @database_connection.sql("select username from users where id = #{session[:user]}")
     @total = @database_connection.sql("select count from users where id = #{session[:user]}").pop["count"]
+    @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}")
+    user_states_visited = @database_connection.sql("select abbreviation from states where id = '#{@user_states}'").downcase
+
+    p ".stately li##{user_states_visited} { color: #00ffa5; }"
+
     erb :user_page
   end
 

@@ -1,6 +1,5 @@
 <link rel="stylesheet" type="text/css" href="root.css">
-
-<% if session[:user] %>
+  <% if session[:user] %>
   <div id="welcome">
     <h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"] %>
 <% end %></h1>
@@ -21,11 +20,15 @@
     </form>
     <h1 id="location" style="border: 5px #00ffa5">
       <% if @location.present? %>
+        <% abbr = @location.state.downcase %>
         <%= @location.city %>
         <%= ", " %>
         <%= @location.state %>
-      <% end %>
     </h1>
+    <style>
+      <%= p ".stately li##{abbr} { color: #00ffa5; }" %>
+    </style>
+      <% end %>
   </div>
 
   <div class="one_third">
