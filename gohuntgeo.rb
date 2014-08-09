@@ -77,8 +77,8 @@ class GoHuntGeoApp < Sinatra::Base
 
   get '/user_page' do
     @states = @database_connection.sql("SELECT abbreviation FROM States")
-    @id = session[:user]
-    @total = @database_connection.sql("select count from users where id = #{@id.to_i}").pop["count"]
+    @id = @database_connection.sql("select username from users where id = #{session[:user]}")
+    @total = @database_connection.sql("select count from users where id = #{session[:user]}").pop["count"]
     erb :user_page
   end
 
@@ -124,6 +124,7 @@ class GoHuntGeoApp < Sinatra::Base
         @database_connection.sql("Insert into states_visited (user_id, state_id) values (#{user_id}, #{state_id})")
       else
         flash[:notice]="You already got points for visiting this state"
+        redirect back
       end
 
       @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
@@ -154,7 +155,22 @@ class GoHuntGeoApp < Sinatra::Base
               :body => erb(:email, :locals => {name: name, email: email, message: message}, layout:false)
     flash[:notice] = "Thanks for your message, we'll get back to you shortly"
     redirect '/contact_us'
-end
+  end
+
+  get '/refer' do
+    erb :refer
+  end
+
+  post '/refer' do
+    friend_name = params[:friend_name]
+    friend_email = params[:friend_email]
+    Pony.mail :to => friend_email,
+              :from => 'GoHuntGeo',
+              :subject => 'Message from GoHuntGeo',
+              :body => erb(:email_2, :locals => {friend_name: friend_name, friend_email: friend_email}, layout:false)
+    flash[:notice] = "Thanks for referring a friend, once they register you will earn one point"
+    redirect '/user_page'
+    end
 
   run! if app_file == $0
 

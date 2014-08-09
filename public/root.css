@@ -1,8 +1,9 @@
+
 #site {
     color: #00ffa5;
     width: 100%;
     background-image: url('images/cityscape.jpg');
-    background-repeat: no-repeat;
+    background-size: cover;
     text-emphasis-color: #00ffa5;
 }
 a:link
@@ -27,6 +28,10 @@ a:hover
 #welcome
 {
     color: #00ffa5;
+    display: inline-block;
+}
+.f {
+    float: left
 }
 
 #map {
@@ -44,7 +49,7 @@ a:hover
     height: 350px;
 }
 #location {
-    color: #00ffa5;
+    color: black;
 }
 #why_content {
     color: #00ffa5;
@@ -112,3 +117,37 @@ ul.stately {
 #points {
     color: #00ffa5
 }
+.container {
+    margin: 0 auto;
+    background-color: #00ffa5;
+    margin-right: 5%;
+    margin-left: 5%
+}
+
+.one_third {
+    float: left;
+    width: 33%;
+    margin-top: 1%;
+}
+
+.clearfix {
+    clear: both;
+    zoom: 1;
+}
+.clearfix:before, .clearfix:after {
+               content: "\0020";
+               display: block;
+               height: 0;
+               overflow: hidden;
+           }
+.clearfix:after {
+     clear: both;
+ }
+
+ul.horizontal-list {
+    list-style: none;
+}
+.horizontal-list li {
+    display: inline-block;
+}
+

@@ -1,13 +1,53 @@
 <link rel="stylesheet" type="text/css" href="root.css">
 
 <% if session[:user] %>
-<div id="welcome"><h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"]%>
-  <% end %></h1>
-<h3>You have <%=@total%> points </h3>
-<form method="get" action="/expense">
-  <button>Expense states</button>
-</form>
+  <div id="welcome">
+    <h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"] %>
+<% end %></h1>
 </div>
+<div class="contains">
+<div class="container clearfix">
+  <div class="one_third">
+    <h3>You have <%= @total %> points</h3>
+
+    <form method="get" action="/expense">
+      <button>Expense states</button>
+    </form>
+  </div>
+
+  <div class="one_third">
+    <form method="post" action="">
+      <button>Mark your location</button>
+    </form>
+    <h1 id="location" style="border: 5px #00ffa5">
+      <% if @location.present? %>
+        <%= @location.city %>
+        <%= ", " %>
+        <%= @location.state %>
+      <% end %>
+    </h1>
+  </div>
+
+  <div class="one_third">
+    <ul class="horizontal-list">
+      <li>
+        <h1 id="refer">
+          <form method="get" action="/refer">
+            <button>Refer a Friend</button>
+          </form>
+        </h1>
+      </li>
+      <li>
+        <h1 id="tagging">
+          <form method="get" action="/">
+            <button>Logout</button>
+          </form>
+        </h1>
+      </li>
+  </div>
+  </ul>
+</div>
+
 <link rel="stylesheet" href="/stately/stately.css">
 <ul class="stately">
   <li data-state="al" id="al">A</li>
@@ -62,36 +102,17 @@
   <li data-state="wi" id="wi">x</li>
   <li data-state="wy" id="wy">y</li>
 </ul>
-<form method="post" action="">
-  <button>Mark your location</button>
-</form>
-<h1 id="location">
-  <% if @location.present? %>
-    <%= @location.city %>
-    <%= ", " %>
-    <%= @location.state %>
-  <% end %>
-</h1>
-<h1 id="refer">
-  <form method="get" action="/refer">
-    <button>Refer a Friend</button>
-  </form></h1>
-<h1 id="tagging">
-  <form method="get" action="/">
-    <button>Logout</button>
-  </form>
-</h1>
-
+</div>
 <!--<style>-->
-  <!--<%#= @states_visited.each do |state|%>-->
-    /*if @location.state.visited?*/
-      /*return*/
-      /*'.stately li ''#{@states_visited}'  {*/
-        /*color: #00ffa5;*/
-      /*}*/
-  /*end*/
-  /**/
-      /**/
+<!--<%#= @states_visited.each do |state|%>-->
+/*if @location.state.visited?*/
+/*return*/
+/*'.stately li ''#{@states_visited}'  {*/
+/*color: #00ffa5;*/
+/*}*/
+/*end*/
+/**/
+/**/
 <!--</style>-->
 
 <!--<div id="mapdiv" style="margin-left: auto; margin-right: auto; width: 90%;; height: 450px;"></div>​-->
@@ -163,7 +184,7 @@
 <!--//      update layer on map-->
 <!--//    };-->
 
-  <!--})();-->
+<!--})();-->
 <!--</script>-->
 
 <!--<div id="mapdiv" style="margin-left: auto; margin-right: auto; width: 90%;; height: 450px;"></div>​-->
