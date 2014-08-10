@@ -35,8 +35,9 @@ class GoHuntGeoApp < Sinatra::Base
       flash[:notice] = "Incorrect Username and Password"
       redirect '/login'
     else
+
       user_id_hash = @database_connection.sql("Select id from users where username = '#{username}'").reduce
-      session[:user] = user_id_hash["id"]
+      session[:user] = user_id_hash["id"].to_i
       redirect '/user_page'
       @list_users = @database_connection.sql("Select username from users")
       erb :login, :locals => {:username => username}
@@ -79,10 +80,12 @@ class GoHuntGeoApp < Sinatra::Base
     @states = @database_connection.sql("SELECT abbreviation FROM States")
     @id = @database_connection.sql("select username from users where id = #{session[:user]}")
     @total = @database_connection.sql("select count from users where id = #{session[:user]}").pop["count"]
-    @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}")
-    user_states_visited = @database_connection.sql("select abbreviation from states where id = '#{@user_states}'").downcase
-
-    p ".stately li##{user_states_visited} { color: #00ffa5; }"
+    if @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").pop["state_id"].nil?
+      then erb :user_page
+    else
+      @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").pop["state_id"]
+      @user_states_visited = @database_connection.sql("select abbreviation from states where id = #{@user_states}").pop["abbreviation"].downcase
+      end
 
     erb :user_page
   end
@@ -145,6 +148,9 @@ class GoHuntGeoApp < Sinatra::Base
 
   get '/how_this_works' do
     erb :how_this_works
+  end
+  get '/expense' do
+    erb :expense
   end
   get '/contact_us' do
     erb :contact_us

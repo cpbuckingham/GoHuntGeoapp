@@ -3,11 +3,16 @@
   <div id="welcome">
     <h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"] %>
 <% end %></h1>
+<style>
+
+  <% arr = @user_states_visited %>
+  <%= p ".stately li##{arr} { color: #00ffa5; }" %>
+</style>
 </div>
 <div class="contains">
 <div class="container clearfix">
   <div class="one_third">
-    <h3>You have <%= @total %> points</h3>
+    <h3>Your total points: <%= @total %></h3>
 
     <form method="get" action="/expense">
       <button>Expense states</button>
@@ -50,6 +55,7 @@
   </div>
   </ul>
 </div>
+
 
 <link rel="stylesheet" href="/stately/stately.css">
 <ul class="stately">

@@ -150,4 +150,18 @@ ul.horizontal-list {
 .horizontal-list li {
     display: inline-block;
 }
+td
+{
+    color: #00ffa5;
+}
+table{
+    margin-right: auto;
+    margin-left: auto;
+}
+#expense_box{
+    margin-right: auto;
+    margin-left: auto;
+    color: #00ffa5;
+    margin-bottom: 10%;
+}
 
