@@ -83,8 +83,14 @@ class GoHuntGeoApp < Sinatra::Base
     if @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}") == []
       then erb :user_page
     else
-      @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").pop["state_id"]
-      @user_states_visited = @database_connection.sql("select abbreviation from states where id = #{@user_states}").pop["abbreviation"].downcase
+      @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").map { |x| x["state_id"].to_i}
+      @user_states_visited = []
+
+      @user_states.each do |state_id|
+         ids = @database_connection.sql("select abbreviation from states where id = #{state_id}").first["abbreviation"].downcase
+        @user_states_visited.push ids
+        p @user_states_visited
+      end
       end
 
     erb :user_page

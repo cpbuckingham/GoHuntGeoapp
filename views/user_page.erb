@@ -3,12 +3,12 @@
   <div id="welcome">
     <h1>Welcome, <%= @database_connection.sql("select username from users where id = '#{session[:user]}'").reduce["username"] %>
 <% end %></h1>
-</div>
+<% @user_states_visited.each do |user_visited| %>
 <style>
-  <% @user_states_visited.each do |arr| %>
-  <%= p ".stately li##{arr} { color: #00ffa5; }" %>
-  <% end %>
-</style>
+  <%= p ".stately li##{user_visited} { color: #00ffa5; }" %>
+    </style>
+<% end %>
+</div>
 <div class="contains">
 <div class="container clearfix">
   <div class="one_third">
