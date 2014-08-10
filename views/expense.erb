@@ -1,6 +1,5 @@
-
-
-<div id="expense_box">
+<% if session[:user] %>
+  <div id="expense_box">
 <h1> How to Expense States</h1>
 <h4> Write in the abbreviation of the state you want to expense and press submit</h4>
   <form method="post" action="/user_page">
@@ -8,6 +7,8 @@
     <input type="text" name="expense" class="textbox"/>
     <input type="submit" value="Submit"/>
   </form>
+    <form method="get" action="/user_page">
+      <button>back</button>
     <br>
     <br>
     <br>
@@ -174,3 +175,4 @@
   </tr>
   </tbody>
 </table>
+<% end %>

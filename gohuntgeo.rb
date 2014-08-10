@@ -80,7 +80,7 @@ class GoHuntGeoApp < Sinatra::Base
     @states = @database_connection.sql("SELECT abbreviation FROM States")
     @id = @database_connection.sql("select username from users where id = #{session[:user]}")
     @total = @database_connection.sql("select count from users where id = #{session[:user]}").pop["count"]
-    if @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").pop["state_id"].nil?
+    if @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}") == []
       then erb :user_page
     else
       @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").pop["state_id"]
@@ -96,7 +96,8 @@ class GoHuntGeoApp < Sinatra::Base
     x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
     ip = request.env['REMOTE_ADDR']
     if get_my_location(ip).nil?
-      ip = '74.125.113.104'
+      ip = '50.201.187.132'#CO
+      # ip = '74.125.113.104'#CA
     end
     remote_ip_location = get_my_location(ip)
     if x_forwarded_ip.present?
