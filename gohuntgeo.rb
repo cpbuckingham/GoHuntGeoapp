@@ -152,25 +152,27 @@ class GoHuntGeoApp < Sinatra::Base
   post '/expense' do
     redirect '/login?' unless session[:user]
     user_id = session[:user].to_i
+    @states = @database_connection.sql("SELECT abbreviation FROM States")
+    abbreviations = @states.map { |x| x["abbreviation"]}
     @expense = params[:expense].upcase
-    if @expense == ""
-      # elsif @expense.blank?
+    if !abbreviations.include?(@expense)
       flash[:notice] = "This state does not exist"
+      redirect '/expense'
     else
-    state_id = @database_connection.sql("Select id from states where abbreviation = '#{@expense}'").first["id"]
-    @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
-    exp = @expense
-    costs = @database_connection.sql("select expense from states where abbreviation = '#{exp}'").pop["expense"]
-    # if costs > @total
-    #   flash[:notice] = "You do not have enough points to expense this state"
-    else
-      total = @total.to_i - costs.to_i
-      @database_connection.sql("UPDATE users set count = #{total} where id = #{user_id}")
-      @database_connection.sql("Insert into states_expense (user_id, state_id) values (#{user_id}, #{state_id})")
-      flash[:notice] = "Thanks for expensing #{@expense}"
+      state_id = @database_connection.sql("Select id from states where abbreviation = '#{@expense}'").first["id"]
+      @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
+      exp = @expense
+      costs = @database_connection.sql("select expense from states where abbreviation = '#{exp}'").pop["expense"]
+      if costs.to_i > @total.to_i
+        flash[:notice] = "You do not have enough points to expense this state"
+      else
+        total = @total.to_i - costs.to_i
+        @database_connection.sql("UPDATE users set count = #{total} where id = #{user_id}")
+        @database_connection.sql("Insert into states_expense (user_id, state_id) values (#{user_id}, #{state_id})")
+        flash[:notice] = "Thanks for expensing #{@expense}"
 
-      @user_states_expense = @database_connection.sql("select state_id from states_expense where user_id = #{session[:user]}").map { |x| x["state_id"].to_i }
-    end
+        @user_states_expense = @database_connection.sql("select state_id from states_expense where user_id = #{session[:user]}").map { |x| x["state_id"].to_i }
+      end
     end
     redirect '/user_page'
   end
