@@ -6,10 +6,19 @@
 
 <% if @user_states_visited == nil %>
 <% nil %>
-<% else @user_states_visited.length > 0 %>
+<% else %>
 <% @user_states_visited.each do |user_visited| %>
     <style>
       <%= p ".stately li##{user_visited} { color: #00ffa5; }" %>
+    </style>
+  <% end %>
+<% end %>
+<% if @user_states_expense == nil %>
+  <% nil %>
+<% else %>
+  <% @user_states_expense.each do |user_visited| %>
+    <style>
+      <%= p ".stately li##{user_visited} { color: deeppink; }" %>
     </style>
   <% end %>
 <% end %>
@@ -20,27 +29,26 @@
       <h3>Travel points:
         <%= @total %>
       </h3>
-
       <form method="get" action="/expense">
         <button>Expense states</button>
       </form>
     </div>
-
     <div class="one_third">
+      <h3> Mark your location: </h3>
       <form method="post" action="">
-        <button>Mark your location</button>
+        <button>Submit</button>
       </form>
       <h1 id="location" style="border: 5px #00ffa5">
-        <% if @location.present? %>
+          <% if @location.present? %>
           <% abbr = @location.state.downcase %>
           <%= @location.city %>
           <%= ", " %>
           <%= @location.state %>
             </h1>
-          <style>
+      <style>
             <%= p ".stately li##{abbr} { color: #00ffa5; }" %>
           </style>
-        <% end %>
+          <% end %>
         </div>
     <div class="one_third">
       <ul class="horizontal-list">
@@ -117,7 +125,6 @@
     <li data-state="wi" id="wi">x</li>
     <li data-state="wy" id="wy">y</li>
   </ul>
-</div>
 
 
 <!--<style>-->

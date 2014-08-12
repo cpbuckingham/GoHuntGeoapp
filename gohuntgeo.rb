@@ -81,17 +81,24 @@ class GoHuntGeoApp < Sinatra::Base
     @id = @database_connection.sql("select username from users where id = #{session[:user]}")
     @total = @database_connection.sql("select count from users where id = #{session[:user]}").pop["count"]
     if @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}") == []
-      then erb :user_page
+    then
+      erb :user_page
     else
-      @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").map { |x| x["state_id"].to_i}
+      @user_states = @database_connection.sql("select state_id from states_visited where user_id = #{session[:user]}").map { |x| x["state_id"].to_i }
+      @states_expense =@database_connection.sql("select state_id from states_expense where user_id = #{session[:user]}").map { |x| x["state_id"].to_i }
       @user_states_visited = []
+      @user_states_expense = []
 
+      @states_expense.each do |state_id|
+        ids = @database_connection.sql("select abbreviation from states where id = #{state_id}").first["abbreviation"].downcase
+        @user_states_expense.push ids
+      end
       @user_states.each do |state_id|
-         ids = @database_connection.sql("select abbreviation from states where id = #{state_id}").first["abbreviation"].downcase
+        ids = @database_connection.sql("select abbreviation from states where id = #{state_id}").first["abbreviation"].downcase
         @user_states_visited.push ids
         p @user_states_visited
       end
-      end
+    end
 
     erb :user_page
   end
@@ -102,8 +109,8 @@ class GoHuntGeoApp < Sinatra::Base
     x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
     ip = request.env['REMOTE_ADDR']
     if get_my_location(ip).nil?
-      ip = '50.201.187.132'#CO
-      # ip = '74.125.113.104'#CA
+      # ip = '50.201.187.132'#CO
+      ip = '74.125.113.104' #CA
     end
     remote_ip_location = get_my_location(ip)
     if x_forwarded_ip.present?
@@ -114,43 +121,25 @@ class GoHuntGeoApp < Sinatra::Base
       end
     else
       @location = remote_ip_location
-      # we need to use @location and the current session to look up the records in the database
-      #state_id = need to look up state in database where abbreviation  = CA  and return its ID
-        #this basically does it except the @location.state method is off. just write a split to get the abbreviation
-          #make sure to get just the ID integer not the hash
+      flash[:notice]= "Thanks for visiting #{@location.state}"
 
       state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
-      user_id = session[:user].to_i #make sure this is an integer
+      user_id = session[:user].to_i
 
-      #track if I have visited this state before
       visited = @database_connection.sql("select count(*) as visited from states_visited where user_id = #{user_id} and state_id = #{state_id}").pop["visited"]
       if visited.to_i == 0
-        #now we need to update the users score/count
-        #how much is this state worth?
         state_point_value = @database_connection.sql("select value from states where id = (#{state_id})").pop["value"]
-        #how many points do I has?
         current_user_points = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
-        #gimme da points
         current_user_total_points = current_user_points.to_i + state_point_value.to_i
-        #persist mah points
         @database_connection.sql("update users set count = #{current_user_total_points} where id = #{user_id}")
-
-        #need to create a record for a UserState where the state_id = the state_id and the user_id = the current_session'
         @database_connection.sql("Insert into states_visited (user_id, state_id) values (#{user_id}, #{state_id})")
       else
-        flash[:notice]="You already got points for visiting this state"
+        flash[:notice]="You already got points for visiting #{@location.state}"
         redirect back
       end
-
       @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
-
-     #first we need to select the user where id = user_id
-      # user = @database_connection.sql("Select id from users where (user_id = #{user_id})")
-      # @database_connection.sql("Insert into users(count) values (#{user}")
-      #
-      #now we need to update that users count based on the value from the state
     end
-    erb :user_page
+    redirect '/user_page'
   end
 
   get '/how_this_works' do
@@ -159,6 +148,33 @@ class GoHuntGeoApp < Sinatra::Base
   get '/expense' do
     erb :expense
   end
+
+  post '/expense' do
+    redirect '/login?' unless session[:user]
+    user_id = session[:user].to_i
+    @expense = params[:expense].upcase
+    if @expense == ""
+      # elsif @expense.blank?
+      flash[:notice] = "This state does not exist"
+    else
+    state_id = @database_connection.sql("Select id from states where abbreviation = '#{@expense}'").first["id"]
+    @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
+    exp = @expense
+    costs = @database_connection.sql("select expense from states where abbreviation = '#{exp}'").pop["expense"]
+    # if costs > @total
+    #   flash[:notice] = "You do not have enough points to expense this state"
+    else
+      total = @total.to_i - costs.to_i
+      @database_connection.sql("UPDATE users set count = #{total} where id = #{user_id}")
+      @database_connection.sql("Insert into states_expense (user_id, state_id) values (#{user_id}, #{state_id})")
+      flash[:notice] = "Thanks for expensing #{@expense}"
+
+      @user_states_expense = @database_connection.sql("select state_id from states_expense where user_id = #{session[:user]}").map { |x| x["state_id"].to_i }
+    end
+    end
+    redirect '/user_page'
+  end
+
   get '/contact_us' do
     erb :contact_us
   end
@@ -170,7 +186,7 @@ class GoHuntGeoApp < Sinatra::Base
     Pony.mail :to => 'cameron.p.buckingham@gmail.com',
               :from => 'GoHuntGeo',
               :subject => 'Message from GoHuntGeo',
-              :body => erb(:email, :locals => {name: name, email: email, message: message}, layout:false)
+              :body => erb(:email, :locals => {name: name, email: email, message: message}, layout: false)
     flash[:notice] = "Thanks for your message, we'll get back to you shortly"
     redirect '/contact_us'
   end
@@ -185,10 +201,10 @@ class GoHuntGeoApp < Sinatra::Base
     Pony.mail :to => friend_email,
               :from => 'GoHuntGeo',
               :subject => 'Message from GoHuntGeo',
-              :body => erb(:email_2, :locals => {friend_name: friend_name, friend_email: friend_email}, layout:false)
+              :body => erb(:email_2, :locals => {friend_name: friend_name, friend_email: friend_email}, layout: false)
     flash[:notice] = "Thanks for referring a friend, once they register you will earn one point"
     redirect '/user_page'
-    end
+  end
 
   run! if app_file == $0
 
