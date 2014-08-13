@@ -2,8 +2,8 @@
 *************************************/
 @font-face {
     font-family: 'stately-webfont';
-    src: url("/stately/assets/font/stately-webfont.eot");
-    src: url("/stately/assets/font/stately-webfont.eot?#iefix") format("embedded-opentype"), url("stately/assets/font/stately-webfont.woff") format("woff"), url("stately/assets/font/stately-webfont.ttf") format("truetype"), url("stately/assets/font/stately-webfont.svg#testfontRegular") format("svg");
+    src: url("/stately-webfont.eot");
+    src: url("/stately-webfont.eot?#iefix") format("embedded-opentype"), url("/stately-webfont.woff") format("woff"), url("/stately-webfont.ttf") format("truetype"), url("/stately-webfont.svg#testfontRegular") format("svg");
     font-weight: normal;
     font-style: normal;
 }
