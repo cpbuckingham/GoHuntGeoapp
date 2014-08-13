@@ -11,3 +11,5 @@ gem "gschool_database_connection", "~> 1.0.0"
 gem "simple_geolocation"
 gem "pony"
 gem "sass"
+gem "pg"
+

@@ -97,6 +97,7 @@ PLATFORMS
 DEPENDENCIES
   capybara
   gschool_database_connection (~> 1.0.0)
+  pg
   pony
   rack-flash3
   rake
