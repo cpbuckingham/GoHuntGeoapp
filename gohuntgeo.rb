@@ -105,13 +105,14 @@ class GoHuntGeoApp < Sinatra::Base
 
   post '/user_page' do
     redirect '/login?' unless session[:user]
-
+puts "im a unicorn"
     x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
     ip = request.env['REMOTE_ADDR']
     if get_my_location(ip).nil?
       # ip = '50.201.187.132'#CO
       ip = '74.125.113.104' #CA
     end
+    puts "im also a unicorn"
     remote_ip_location = get_my_location(ip)
     if x_forwarded_ip.present?
       @location = get_my_location(x_forwarded_ip.split(', ')[0])
