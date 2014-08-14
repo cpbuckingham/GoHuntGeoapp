@@ -4,6 +4,7 @@ class State < ActiveRecord::Migration
       t.string :name
       t.integer :value
       t.string :abbreviation
+      t.integer :expense
 
     end
   end
