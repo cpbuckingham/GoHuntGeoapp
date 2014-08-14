@@ -117,14 +117,19 @@ puts "im a unicorn"
     if x_forwarded_ip.present?
       @location = get_my_location(x_forwarded_ip.split(', ')[0])
       if @location.nil?
+        puts "im a nil object, using remote ip location"
         @location = remote_ip_location
       end
     else
+      puts "x forwarded location found"
       @location = remote_ip_location
       flash[:notice]= "Thanks for visiting #{@location.state}"
 
       state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
       user_id = session[:user].to_i
+
+      puts "state id #{state_id}"
+      puts "user id #{user_id}"
 
       visited = @database_connection.sql("select count(*) as visited from states_visited where user_id = #{user_id} and state_id = #{state_id}").pop["visited"]
       if visited.to_i == 0
