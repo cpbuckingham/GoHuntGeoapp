@@ -128,6 +128,8 @@ puts "im a unicorn"
       @location = remote_ip_location
     end
 
+    puts "#{@location.state} "
+    puts "#{@location.city} "
       flash[:notice]= "Thanks for visiting #{@location.state}"
 
       state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
