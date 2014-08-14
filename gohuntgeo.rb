@@ -6,6 +6,20 @@ require "pony"
 require "sass"
 
 class GoHuntGeoApp < Sinatra::Base
+  configure do
+    Pony.options = {
+      :via => :smtp,
+      :via_options => {
+        :address => 'smtp.sendgrid.net',
+        :port => '587',
+        :domain => 'http://dry-retreat-1477.herokuapp.com/refer',
+        :user_name => ENV['SENDGRID_USERNAME'],
+        :password => ENV['SENDGRID_PASSWORD'],
+        :authentication => :plain,
+        :enable_starttls_auto => true
+      }
+    }
+  end
   enable :sessions
   use Rack::Flash
 
@@ -105,38 +119,26 @@ class GoHuntGeoApp < Sinatra::Base
 
   post '/user_page' do
     redirect '/login?' unless session[:user]
-puts "im a unicorn"
     x_forwarded_ip = request.env['HTTP_X_FORWARDED_FOR']
     ip = request.env['REMOTE_ADDR']
     if get_my_location(ip).nil?
       # ip = '50.201.187.132'#CO
       ip = '74.125.113.104' #CA
     end
-    puts "im also a unicorn"
     remote_ip_location = get_my_location(ip)
-    puts "stuff"
     if x_forwarded_ip.present?
-      puts "x forwarded location found"
       @location = get_my_location(x_forwarded_ip.split(', ')[0])
-      puts "getting a different location"
       if @location.nil?
-        puts "im a nil object, using remote ip location"
         @location = remote_ip_location
       end
     else
-      puts "x forwarded location not found"
       @location = remote_ip_location
     end
 
-    puts "#{@location.state} "
-    puts "#{@location.city} "
       flash[:notice]= "Thanks for visiting #{@location.state}"
 
       state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
       user_id = session[:user].to_i
-
-      puts "state id #{state_id}"
-      puts "user id #{user_id}"
 
       visited = @database_connection.sql("select count(*) as visited from states_visited where user_id = #{user_id} and state_id = #{state_id}").pop["visited"]
       if visited.to_i == 0
