@@ -114,14 +114,17 @@ puts "im a unicorn"
     end
     puts "im also a unicorn"
     remote_ip_location = get_my_location(ip)
+    puts "stuff"
     if x_forwarded_ip.present?
+      puts "x forwarded location found"
       @location = get_my_location(x_forwarded_ip.split(', ')[0])
+      puts "getting a different location"
       if @location.nil?
         puts "im a nil object, using remote ip location"
         @location = remote_ip_location
       end
     else
-      puts "x forwarded location found"
+      puts "x forwarded location not found"
       @location = remote_ip_location
       flash[:notice]= "Thanks for visiting #{@location.state}"
 
