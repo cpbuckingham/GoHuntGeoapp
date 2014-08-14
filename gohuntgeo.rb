@@ -126,6 +126,8 @@ puts "im a unicorn"
     else
       puts "x forwarded location not found"
       @location = remote_ip_location
+    end
+
       flash[:notice]= "Thanks for visiting #{@location.state}"
 
       state_id = @database_connection.sql("Select id from states where abbreviation = '#{@location.state}'").first["id"]
@@ -146,7 +148,7 @@ puts "im a unicorn"
         redirect back
       end
       @total = @database_connection.sql("select count from users where id = #{user_id}").pop["count"]
-    end
+
     redirect '/user_page'
   end
 
