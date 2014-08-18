@@ -123,7 +123,7 @@ class GoHuntGeoApp < Sinatra::Base
     ip = request.env['REMOTE_ADDR']
     if get_my_location(ip).nil?
       # ip = '50.201.187.132'#CO
-      ip = '74.125.113.104' #CA
+      # ip = '74.125.113.104' #CA
     end
     remote_ip_location = get_my_location(ip)
     if x_forwarded_ip.present?
