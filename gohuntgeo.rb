@@ -225,11 +225,6 @@ class GoHuntGeoApp < Sinatra::Base
   run! if app_file == $0
 
   def get_my_location(ip)
-    puts ip
-    thing = SimpleGeolocation::Geocoder.new(ip).geocode!
-    puts "*"*80
-    puts thing
-    puts "*"*80
-    thing
+    SimpleGeolocation::Geocoder.new(ip).geocode!
   end
 end
