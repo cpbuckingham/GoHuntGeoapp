@@ -13,7 +13,7 @@ class GoHuntGeoApp < Sinatra::Base
       :via_options => {
         :address => 'smtp.sendgrid.net',
         :port => '587',
-        :domain => 'http://dry-retreat-1477.herokuapp.com/refer',
+        :domain => 'http://gohuntgeo.herokuapp.com/refer',
         :user_name => ENV['SENDGRID_USERNAME'],
         :password => ENV['SENDGRID_PASSWORD'],
         :authentication => :plain,

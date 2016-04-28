@@ -1,5 +1,5 @@
 require 'simple_geolocation'
-require "resolv-replace"
+require 'resolv-replace'
 
 
 class LocatorsController < ApplicationController

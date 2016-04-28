@@ -1,1 +1,1 @@
-http://gohuntgeo.herokuapp.com/
+http://www.gohuntgeo.com
