@@ -1,4 +1,6 @@
 require 'simple_geolocation'
+require "resolv-replace"
+
 
 class LocatorsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :new_request

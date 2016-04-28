@@ -4,6 +4,7 @@ require "gschool_database_connection"
 require "simple_geolocation"
 require "pony"
 require "sass"
+require "resolv-replace"
 
 class GoHuntGeoApp < Sinatra::Base
   configure do
